@@ -1,13 +1,26 @@
 <script lang="ts" setup>
 // console.log(import.meta.env)
+import axios from 'axios'
+axios({
+  url: '/api/user/login',
+  method: 'post',
+  data: {
+    username: 'admin',
+    password: '111111',
+  },
+})
 </script>
 
 <template>
   <div>
-    <el-button type="primary">Primary</el-button>
-    <!--测试SVG图标使用 -->
-    <svg-icon name="todo"></svg-icon>
+    <h1>aaa</h1>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+div {
+  h1 {
+    color: $color;
+  }
+}
+</style>

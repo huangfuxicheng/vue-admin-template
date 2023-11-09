@@ -12,6 +12,6 @@ app.use(ElementPlus, {
 import 'virtual:svg-icons-register'
 //引入自定义插件对象：注册整个项目全局组件
 import globalComponent from '@/components/index'
-
+import '@/styles/index.scss'
 app.use(globalComponent)
 app.mount('#app')
