@@ -55,7 +55,5 @@
     "vite": "^4.4.5",
     "vue-tsc": "^1.8.5"
   },
-  "gitHooks": {
-
-  }
+  "gitHooks": {}
 }
