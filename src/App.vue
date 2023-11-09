@@ -1,4 +1,6 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+console.log(import.meta.env)
+</script>
 
 <template>
   <div>
