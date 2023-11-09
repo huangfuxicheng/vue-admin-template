@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 // console.log(import.meta.env)
-import SvgIcon from '@/components/SvgIcon/index.vue'
 </script>
 
 <template>

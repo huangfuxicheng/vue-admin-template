@@ -1,4 +1,4 @@
-import {createApp} from 'vue'
+import { createApp } from 'vue'
 import App from '@/App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -11,7 +11,7 @@ app.use(ElementPlus, {
 //svg插件需要配置代码
 import 'virtual:svg-icons-register'
 //引入自定义插件对象：注册整个项目全局组件
-import globalComponent from '@/components/index.ts'
+import globalComponent from '@/components/index'
 
 app.use(globalComponent)
 app.mount('#app')
