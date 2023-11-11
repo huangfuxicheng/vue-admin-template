@@ -14,12 +14,12 @@ request.interceptors.request.use((config) => {
 //响应拦截器
 request.interceptors.response.use(
     (response) => {
-      return response.data
+        return response.data
     },
     (error) => {
     //处理网络错误
-      let msg = ''
-      let status = error.response.status
+        let msg = ''
+        let status = error.response.status
     switch (status) {
       case 401:
         msg = 'token过期'
@@ -40,7 +40,7 @@ request.interceptors.response.use(
       type: 'error',
       message: msg,
     })
-      return Promise.reject(error)
+        return Promise.reject(error)
     },
 )
 export default request

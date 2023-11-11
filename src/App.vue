@@ -9,15 +9,14 @@
 //     password: '111111',
 //   },
 // })
-import request from '../utils/request.ts'
+import {onMounted} from 'vue'
+import {reqLogin} from '@/api/user/index.ts'
 
-request({
-  url: '/user/login',
-  method: 'post',
-  data: {
+onMounted(() => {
+  reqLogin({
     username: 'admin',
     password: '111111',
-  },
+  })
 })
 </script>
 
