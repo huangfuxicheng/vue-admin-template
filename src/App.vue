@@ -9,15 +9,15 @@
 //     password: '111111',
 //   },
 // })
-import request from "../utils/request.ts";
+import request from '../utils/request.ts'
 
 request({
   url: '/user/login',
   method: 'post',
   data: {
     username: 'admin',
-    password: '111111'
-  }
+    password: '111111',
+  },
 })
 </script>
 
