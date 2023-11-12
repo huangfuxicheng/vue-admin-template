@@ -1,6 +1,6 @@
 //进行axios二次封装：使用请求与响应拦截器
 import axios from 'axios'
-import {ElMessage} from 'element-plus'
+import { ElMessage } from 'element-plus'
 
 //第一步：利用axios对象的create方法，去创建axios实例（其他的配置：基础路径，超时时间）
 let request = axios.create({
@@ -13,13 +13,13 @@ request.interceptors.request.use((config) => {
 })
 //响应拦截器
 request.interceptors.response.use(
-    (response) => {
-        return response.data
-    },
-    (error) => {
+  (response) => {
+    return response.data
+  },
+  (error) => {
     //处理网络错误
-        let msg = ''
-        let status = error.response.status
+    let msg = ''
+    let status = error.response.status
     switch (status) {
       case 401:
         msg = 'token过期'
@@ -40,7 +40,7 @@ request.interceptors.response.use(
       type: 'error',
       message: msg,
     })
-        return Promise.reject(error)
-    },
+    return Promise.reject(error)
+  },
 )
 export default request

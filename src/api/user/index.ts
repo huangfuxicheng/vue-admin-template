@@ -3,28 +3,28 @@
 import request from '@/utils/request.ts'
 
 import type {
-    loginForm,
-    loginResponseData,
-    userInfoResponseData,
+  loginForm,
+  loginResponseData,
+  userInfoResponseData,
 } from './type.ts'
 
 //项目用户相关的请求地址
 
 enum API {
-    LOGIN_URL = '/user/login',
+  LOGIN_URL = '/user/login',
 
-    USERINFO_URL = '/user/info',
+  USERINFO_URL = '/user/info',
 
-    LOGOUT_URL = '/user/logout',
+  LOGOUT_URL = '/user/logout',
 }
 
 //登录接口
 export const reqLogin = (data: loginForm) =>
-    request.post<any, loginResponseData>(API.LOGIN_URL, data)
+  request.post<any, loginResponseData>(API.LOGIN_URL, data)
 //获取用户信息
 
 export const reqUserInfo = () =>
-    request.get<any, userInfoResponseData>(API.USERINFO_URL)
+  request.get<any, userInfoResponseData>(API.USERINFO_URL)
 
 //退出登录
 
