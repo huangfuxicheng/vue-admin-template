@@ -1,5 +1,5 @@
 export const getTime = () => {
-  let title: string = ''
+  let title: string
   const hour: number = new Date().getHours()
   if (hour < 9) {
     title = '上午好'
