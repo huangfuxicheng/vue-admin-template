@@ -1,22 +1,33 @@
 <template>
-  <div class='login_container'>
+  <div class="login_container">
     <el-row>
-      <el-col :span='12' :xs='0'></el-col>
-      <el-col :span='12' :xs='24'>
-        <el-form class='login_form'>
+      <el-col :span="12" :xs="0"></el-col>
+      <el-col :span="12" :xs="24">
+        <el-form class="login_form">
           <h1>Hello</h1>
           <h2>欢迎来到硅谷甄选</h2>
           <el-form-item>
             <el-input
-              :prefix-icon='User'
-              v-model='loginForm.username'
+              :prefix-icon="User"
+              v-model="loginForm.username"
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-input type='password' :prefix-icon='Lock' v-model='loginForm.password' show-password></el-input>
+            <el-input
+              type="password"
+              :prefix-icon="Lock"
+              v-model="loginForm.password"
+              show-password
+            ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class='login_btn' :loading='loading' type='primary' size='default' @click='handleSubmit'>
+            <el-button
+              class="login_btn"
+              :loading="loading"
+              type="primary"
+              size="default"
+              @click="handleSubmit"
+            >
               登录
             </el-button>
           </el-form-item>
@@ -26,7 +37,7 @@
   </div>
 </template>
 
-<script setup lang='ts' name='login'>
+<script setup lang="ts" name="login">
 import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
 import { ElNotification } from 'element-plus'
@@ -66,10 +77,9 @@ const handleSubmit = async () => {
     })
   }
 }
-
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .login_container {
   width: 100%;
   height: 100vh;
@@ -80,7 +90,7 @@ const handleSubmit = async () => {
     position: relative;
     width: 80%;
     top: 30vh;
-    background: url("@/assets/images/login_form.png");
+    background: url('@/assets/images/login_form.png');
     background-size: cover;
     padding: 40px;
   }
