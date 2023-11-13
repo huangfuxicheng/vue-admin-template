@@ -1,6 +1,6 @@
 export const getTime = () => {
-  let title = ''
-  const hour = new Date().getHours()
+  let title: string = ''
+  const hour: number = new Date().getHours()
   if (hour < 9) {
     title = '上午好'
   } else if (hour < 14) {
