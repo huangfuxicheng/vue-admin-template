@@ -2,7 +2,7 @@
 // console.log(import.meta.env)
 // import axios from 'axios'
 // axios({
-//   url: '/user/login',
+//   url: '/user/logo',
 //   method: 'post',
 //   data: {
 //     username: 'admin',
