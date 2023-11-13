@@ -43,6 +43,7 @@ import { reactive, ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import useUserStore from '@/store/modules/user.ts'
 import { useRouter } from 'vue-router'
+import { getTime } from '@/utils/time.ts'
 
 let loading = ref(false)
 const loginForm = reactive({ username: 'admin', password: '111111' })
@@ -64,6 +65,7 @@ const handleSubmit = async () => {
     ElNotification({
       type: 'success',
       message: '登录成功！',
+      title: `HI,${getTime()}`
     })
     //登录成功,加载效果也消失
     loading.value = false
