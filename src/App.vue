@@ -9,15 +9,15 @@
 //     password: '111111',
 //   },
 // })
-import { onMounted } from 'vue'
-import { reqLogin } from '@/api/user/index.ts'
+// import { onMounted } from 'vue'
+// import { reqLogin } from '@/api/user/index.ts'
 
-onMounted(() => {
-  reqLogin({
-    username: 'admin',
-    password: '111111',
-  })
-})
+// onMounted(() => {
+//   reqLogin({
+//     username: 'admin',
+//     password: '111111',
+//   })
+// })
 </script>
 
 <template>
