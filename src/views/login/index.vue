@@ -65,7 +65,7 @@ const handleSubmit = async () => {
     ElNotification({
       type: 'success',
       message: '登录成功！',
-      title: `HI,${getTime()}`
+      title: `HI,${getTime()}`,
     })
     //登录成功,加载效果也消失
     loading.value = false
