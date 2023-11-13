@@ -1,32 +1,32 @@
 <template>
-  <div class="login_container">
+  <div class='login_container'>
     <el-row>
-      <el-col :span="12" :xs="0"></el-col>
-      <el-col :span="12" :xs="24">
-        <el-form class="login_form">
+      <el-col :span='12' :xs='0'></el-col>
+      <el-col :span='12' :xs='24'>
+        <el-form class='login_form' :model='loginForm' :rules='rules' ref='ruleFormRef'>
           <h1>Hello</h1>
           <h2>欢迎来到硅谷甄选</h2>
-          <el-form-item>
+          <el-form-item prop='username'>
             <el-input
-              :prefix-icon="User"
-              v-model="loginForm.username"
+              :prefix-icon='User'
+              v-model='loginForm.username'
             ></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop='password'>
             <el-input
-              type="password"
-              :prefix-icon="Lock"
-              v-model="loginForm.password"
+              type='password'
+              :prefix-icon='Lock'
+              v-model='loginForm.password'
               show-password
             ></el-input>
           </el-form-item>
           <el-form-item>
             <el-button
-              class="login_btn"
-              :loading="loading"
-              type="primary"
-              size="default"
-              @click="handleSubmit"
+              class='login_btn'
+              :loading='loading'
+              type='primary'
+              size='default'
+              @click='handleSubmit'
             >
               登录
             </el-button>
@@ -37,8 +37,9 @@
   </div>
 </template>
 
-<script setup lang="ts" name="login">
+<script setup lang='ts' name='login'>
 import { User, Lock } from '@element-plus/icons-vue'
+import type { FormInstance } from 'element-plus'
 import { reactive, ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import useUserStore from '@/store/modules/user.ts'
@@ -49,7 +50,59 @@ let loading = ref(false)
 const loginForm = reactive({ username: 'admin', password: '111111' })
 const $router = useRouter()
 const useStore = useUserStore()
+
+const ruleFormRef = ref<FormInstance>()
+
+// const validatePassword = (_: any, value: any, callback: any) => {
+//   if (value === '') {
+//     callback(new Error('Please input the password'))
+//     return
+//   } else {
+//     if (loginForm.username !== '') {
+//       if (!ruleFormRef.value) return
+//       ruleFormRef.value.validateField('checkPass', () => null)
+//     }
+//     callback()
+//   }
+// }
+// const validateUsername = (_: any, value: any, callback: any) => {
+//   if (value === '') {
+//     callback(new Error('Please input the username again'))
+//   } else if (value !== loginForm.password) {
+//     callback(new Error('Two inputs don\'t match!'))
+//   } else {
+//     callback()
+//   }
+// }
+
+// const rules = reactive<FormRules<typeof loginForm>>({
+//   password: [{ validator: validatePassword, trigger: 'blur' }],
+//   username: [{ validator: validateUsername, trigger: 'blur' }],
+// })
+
+const rules = {
+  username: [
+    //规则对象属性:
+    {
+      required: true, // required,代表这个字段务必要校验的
+      min: 5, //min:文本长度至少多少位
+      max: 10, // max:文本长度最多多少位
+      message: '长度应为6-10位', // message:错误的提示信息
+      trigger: 'change', //trigger:触发校验表单的时机 change->文本发生变化触发校验, blur:失去焦点的时候触发校验规则
+    },
+  ],
+  password: [
+    {
+      required: true,
+      min: 6,
+      max: 10,
+      message: '长度应为6-10位',
+      trigger: 'change',
+    },
+  ],
+}
 const handleSubmit = async () => {
+  await ruleFormRef?.value?.validate()
   //按钮加载效果
   loading.value = true
   //点击登录按钮以后干什么
@@ -81,7 +134,7 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .login_container {
   width: 100%;
   height: 100vh;
