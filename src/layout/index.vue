@@ -11,18 +11,25 @@
           default-active="2"
           text-color="#fff"
         >
-          <el-menu-item index="1">
-            <el-icon>
-              <setting />
-            </el-icon>
-            <span>首页</span>
-          </el-menu-item>
-          <el-menu-item index="2">
-            <el-icon>
-              <setting />
-            </el-icon>
-            <span>数据大屏</span>
-          </el-menu-item>
+          <Menu :menuList="useStore.menuRoutes"></Menu>
+          <!--          <el-menu-item index="1">-->
+          <!--            <el-icon>-->
+          <!--              <setting />-->
+          <!--            </el-icon>-->
+          <!--            <span>首页</span>-->
+          <!--          </el-menu-item>-->
+          <!--          <el-menu-item index="2">-->
+          <!--            <el-icon>-->
+          <!--              <setting />-->
+          <!--            </el-icon>-->
+          <!--            <span>数据大屏</span>-->
+          <!--          </el-menu-item>-->
+          <!--          <el-sub-menu index="3">-->
+          <!--            <template #title>-->
+          <!--              <span>权限管理</span>-->
+          <!--            </template>-->
+          <!--            <el-menu-item index="2-1">用户管理</el-menu-item>-->
+          <!--          </el-sub-menu>-->
         </el-menu>
       </el-scrollbar>
     </div>
@@ -35,7 +42,9 @@
 
 <script setup lang="ts">
 import logo from '@/layout/logo/index.vue'
-import { Setting } from '@element-plus/icons-vue'
+import Menu from './menu/index.vue'
+import useUserStore from '@/store/modules/user.ts'
+let useStore = useUserStore()
 </script>
 
 <style scoped lang="scss">
@@ -52,6 +61,9 @@ import { Setting } from '@element-plus/icons-vue'
     .scrollbar {
       width: 100%;
       height: calc(100vh - $base-logo-height);
+      .el-menu {
+        border-right: none;
+      }
     }
   }
 

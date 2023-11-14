@@ -5,6 +5,8 @@ import { reqLogin } from '@/api/user'
 import { loginResponseData } from '@/api/user/type.ts'
 import { UserState } from '@/store/types/type.ts'
 import { GET_TOKEN, SET_TOKEN } from '@/utils/token.ts'
+//引入路由（常量路由）
+import { constantRoute } from '@/router/routes.ts'
 //创建用户小仓库
 const useUserStore = defineStore('User', {
   //小仓库存储数据地方
@@ -12,6 +14,7 @@ const useUserStore = defineStore('User', {
     return {
       // token: localStorage.getItem('TOKEN'),
       token: GET_TOKEN(),
+      menuRoutes: constantRoute, //仓库存储生产菜单需要数组（路由）
     }
   },
   //处理异步|逻辑地方
