@@ -46,7 +46,7 @@
   </template>
 </template>
 
-<script setup lang="ts" name="menu">
+<script setup lang="ts" name="Menu">
 //获取路由器对象
 import { useRouter } from 'vue-router'
 

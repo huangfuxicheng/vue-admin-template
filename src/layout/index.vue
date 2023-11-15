@@ -34,17 +34,18 @@
       </el-scrollbar>
     </div>
     <!--    顶部导航-->
-    <div class="layout_tabbar">2</div>
+    <div class="layout_tabbar"><Tabbar></Tabbar></div>
     <!--    内容展示区-->
-    <div class="layout_main"><router></router></div>
+    <div class="layout_main"><Router></Router></div>
   </div>
 </template>
 
 <script setup lang="ts">
 import logo from '@/layout/logo/index.vue'
 import Menu from '@/layout/menu/index.vue'
-import router from '@/layout/main/index.vue'
+import Router from '@/layout/main/index.vue'
 import useUserStore from '@/store/modules/user.ts'
+import Tabbar from '@/layout/tabbar/index.vue'
 let useStore = useUserStore()
 </script>
 
@@ -52,13 +53,12 @@ let useStore = useUserStore()
 .layout_container {
   width: 100%;
   height: 100vh;
-  background-color: blue;
 
   .layout_slider {
     width: $base-menu-width;
     height: 100vh;
     background: $base-menu-background;
-
+    color: white;
     .scrollbar {
       width: 100%;
       height: calc(100vh - $base-logo-height);
@@ -72,7 +72,6 @@ let useStore = useUserStore()
     position: fixed;
     width: calc(100% - $base-menu-width);
     height: $base-tabbar-height;
-    background-color: skyblue;
     top: 0;
     left: $base-menu-width;
   }
