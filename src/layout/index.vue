@@ -8,7 +8,7 @@
           active-text-color="#ffd04b"
           background-color="#001529"
           class="el-menu-vertical-demo"
-          default-active="2"
+          :default-active="$router.path"
           text-color="#fff"
         >
           <Menu :menuList="useStore.menuRoutes"></Menu>
@@ -36,13 +36,14 @@
     <!--    顶部导航-->
     <div class="layout_tabbar">2</div>
     <!--    内容展示区-->
-    <div class="layout_main">3</div>
+    <div class="layout_main"><router></router></div>
   </div>
 </template>
 
 <script setup lang="ts">
 import logo from '@/layout/logo/index.vue'
-import Menu from './menu/index.vue'
+import Menu from '@/layout/menu/index.vue'
+import router from '@/layout/main/index.vue'
 import useUserStore from '@/store/modules/user.ts'
 let useStore = useUserStore()
 </script>
