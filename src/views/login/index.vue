@@ -48,12 +48,13 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { reactive, ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import useUserStore from '@/store/modules/user.ts'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { getTime } from '@/utils/time.ts'
 
 let loading = ref(false)
 const loginForm = reactive({ username: 'admin', password: '111111' })
 const $router = useRouter()
+const $route = useRoute()
 const useStore = useUserStore()
 
 const ruleFormRef = ref<FormInstance>()
@@ -111,7 +112,8 @@ const handleSubmit = async () => {
     //也可以书写.then语法
     await useStore.userLogin(loginForm)
     //编程式导航跳转到展示数据的首页
-    $router.push('/')
+    const redirect = $route.query.redirect
+    $router.push({ path: (redirect as string) || '/home' })
     //登录成功的提示信息
     ElNotification({
       type: 'success',

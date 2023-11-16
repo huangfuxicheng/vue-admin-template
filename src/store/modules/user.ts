@@ -4,7 +4,7 @@ import { loginForm, userInfoResponseData } from '@/api/user/type.ts'
 import { reqLogin, reqUserInfo } from '@/api/user'
 import { loginResponseData } from '@/api/user/type.ts'
 import { UserState } from '@/store/modules/types/type.ts'
-import { GET_TOKEN, SET_TOKEN } from '@/utils/token.ts'
+import { GET_TOKEN, REMOVE_TOKEN, SET_TOKEN } from '@/utils/token.ts'
 //引入路由（常量路由）
 import { constantRoute } from '@/router/routes.ts'
 //创建用户小仓库
@@ -45,6 +45,12 @@ const useUserStore = defineStore('User', {
         this.username = result.data.checkUser.username
         this.avatar = result.data.checkUser.avatar
       }
+    },
+    async logout() {
+      this.username = ''
+      this.token = ''
+      this.avatar = ''
+      REMOVE_TOKEN()
     },
   },
   getters: {},
