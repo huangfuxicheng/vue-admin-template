@@ -8,16 +8,23 @@
   </router-view>
 </template>
 
-<script setup lang="ts" name="Main"></script>
+<script setup lang="ts" name="Main">
+import { ref } from 'vue'
+
+const a = ref(0)
+console.log(a)
+</script>
 
 <style scoped>
 .fade-enter-from {
   opacity: 0;
   transform: scale(0);
 }
+
 .fade-enter-active {
   transition: all 1s;
 }
+
 .fade-enter-to {
   opacity: 1;
   transform: scale(1);

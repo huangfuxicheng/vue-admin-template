@@ -29,15 +29,6 @@ export const constantRoute = [
         },
         component: () => import('@/views/home/index.vue'),
       },
-      {
-        path: '/test',
-        component: () => import('@/views/home/index.vue'),
-        meta: {
-          title: '测试',
-          hidden: false,
-          icon: 'HomeFilled',
-        },
-      },
     ],
   },
   {

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { loginForm } from '@/api/user/type.ts'
 import { reqLogin } from '@/api/user'
 import { loginResponseData } from '@/api/user/type.ts'
-import { UserState } from '@/store/types/type.ts'
+import { UserState } from '@/store/modules/types/type.ts'
 import { GET_TOKEN, SET_TOKEN } from '@/utils/token.ts'
 //引入路由（常量路由）
 import { constantRoute } from '@/router/routes.ts'

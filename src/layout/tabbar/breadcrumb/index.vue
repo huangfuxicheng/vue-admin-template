@@ -1,7 +1,7 @@
 <template>
   <!--      左侧切换按钮-->
   <el-icon style="margin-right: 20px" @click="changeIcon">
-    <Expand />
+    <component :is="layoutSetting.fold ? 'Fold' : 'Expand'"></component>
   </el-icon>
   <!--      面包屑-->
   <el-breadcrumb separator-icon="ArrowRight">
@@ -12,12 +12,11 @@
 </template>
 
 <script setup lang="ts" name="BreadCrumb">
-import { ref } from 'vue'
+import useLayoutSettingStore from '@/store/modules/setting.ts'
 
-let fold = ref(false)
+const layoutSetting = useLayoutSettingStore()
 const changeIcon = () => {
-  fold.value = !fold.value
-  alert(fold.value)
+  layoutSetting.fold = !layoutSetting.fold
 }
 </script>
 

@@ -1,17 +1,18 @@
 <template>
   <div class="layout_container">
     <!--   左侧菜单-->
-    <div class="layout_slider">
+    <div class="layout_slider" :class="{ fold: !!settingStore.fold }">
       <logo></logo>
       <el-scrollbar class="scrollbar">
         <el-menu
+          :collapse="!!settingStore.fold"
           active-text-color="#ffd04b"
           background-color="#001529"
           class="el-menu-vertical-demo"
-          :default-active="$router.path"
+          :default-active="$route.path"
           text-color="#fff"
         >
-          <Menu :menuList="useStore.menuRoutes"></Menu>
+          <Menu :menuList="userStore.menuRoutes"></Menu>
           <!--          <el-menu-item index="1">-->
           <!--            <el-icon>-->
           <!--              <setting />-->
@@ -34,19 +35,27 @@
       </el-scrollbar>
     </div>
     <!--    顶部导航-->
-    <div class="layout_tabbar"><Tabbar></Tabbar></div>
+    <div class="layout_tabbar" :class="{ fold: !!settingStore.fold }">
+      <Tabbar></Tabbar>
+    </div>
     <!--    内容展示区-->
-    <div class="layout_main"><Router></Router></div>
+    <div class="layout_main" :class="{ fold: !!settingStore.fold }">
+      <Main></Main>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Layout">
+import { useRoute } from 'vue-router'
 import logo from '@/layout/logo/index.vue'
 import Menu from '@/layout/menu/index.vue'
-import Router from '@/layout/main/index.vue'
+import Main from '@/layout/main/index.vue'
 import useUserStore from '@/store/modules/user.ts'
 import Tabbar from '@/layout/tabbar/index.vue'
-let useStore = useUserStore()
+import useLayoutSettingStore from '@/store/modules/setting.ts'
+let userStore = useUserStore()
+let settingStore = useLayoutSettingStore()
+let $route = useRoute()
 </script>
 
 <style scoped lang="scss">
@@ -59,6 +68,10 @@ let useStore = useUserStore()
     height: 100vh;
     background: $base-menu-background;
     color: white;
+    transition: all 0.3s;
+    &.fold {
+      width: $base-menu-min-width;
+    }
     .scrollbar {
       width: 100%;
       height: calc(100vh - $base-logo-height);
@@ -74,6 +87,11 @@ let useStore = useUserStore()
     height: $base-tabbar-height;
     top: 0;
     left: $base-menu-width;
+    transition: all 0.3s;
+    &.fold {
+      width: calc(100vw - $base-menu-min-width);
+      left: $base-menu-min-width;
+    }
   }
 
   .layout_main {
@@ -85,6 +103,11 @@ let useStore = useUserStore()
     top: $base-tabbar-height;
     padding: 24px;
     overflow: auto;
+    transition: all 0.3s;
+    &.fold {
+      width: calc(100vw - $base-menu-min-width);
+      left: $base-menu-min-width;
+    }
   }
 }
 </style>

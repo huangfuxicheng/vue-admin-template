@@ -16,7 +16,7 @@ import setting from '@/setting'
   color: white;
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
 
   img {
     width: 40px;
