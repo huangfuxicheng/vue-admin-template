@@ -1,14 +1,19 @@
 //进行axios二次封装：使用请求与响应拦截器
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import useUserStore from '@/store/modules/user.ts'
 
 //第一步：利用axios对象的create方法，去创建axios实例（其他的配置：基础路径，超时时间）
-let request = axios.create({
+const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 5000,
 })
 //请求拦截器
 request.interceptors.request.use((config) => {
+  const userStore = useUserStore()
+  if (userStore.token) {
+    config.headers.token = userStore.token
+  }
   return config
 })
 //响应拦截器
@@ -19,7 +24,7 @@ request.interceptors.response.use(
   (error) => {
     //处理网络错误
     let msg = ''
-    let status = error.response.status
+    const status = error.response.status
     switch (status) {
       case 401:
         msg = 'token过期'
