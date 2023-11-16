@@ -9,10 +9,19 @@
 </template>
 
 <script setup lang="ts" name="Main">
-import { ref } from 'vue'
-
-const a = ref(0)
-console.log(a)
+import { nextTick, ref, watch } from 'vue'
+import useLayoutSettingStore from '@/store/modules/setting.ts'
+const layoutSettingStore = useLayoutSettingStore()
+let exist = ref(true)
+watch(
+  () => layoutSettingStore.refresh,
+  () => {
+    exist.value = false
+    nextTick(() => {
+      exist.value = true
+    })
+  },
+)
 </script>
 
 <style scoped>
