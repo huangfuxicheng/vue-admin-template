@@ -5,19 +5,36 @@
   </el-icon>
   <!--      面包屑-->
   <el-breadcrumb separator-icon="ArrowRight">
-    <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
-    <el-breadcrumb-item><a href="/">aaaa</a></el-breadcrumb-item>
-    <el-breadcrumb-item>promotion list</el-breadcrumb-item>
+    <el-breadcrumb-item
+      v-for="(item, index) in $route.matched"
+      :key="index"
+      :to="item.path"
+      v-show="item.meta.title"
+    >
+      <el-icon>
+        <component :is="item.meta.icon"></component>
+      </el-icon>
+      <span>{{ item.meta.title }}</span>
+    </el-breadcrumb-item>
   </el-breadcrumb>
 </template>
 
 <script setup lang="ts" name="BreadCrumb">
 import useLayoutSettingStore from '@/store/modules/setting.ts'
+import { useRoute } from 'vue-router'
 
 const layoutSetting = useLayoutSettingStore()
 const changeIcon = () => {
   layoutSetting.fold = !layoutSetting.fold
 }
+const $route = useRoute()
 </script>
 
-<style scoped></style>
+<style scoped>
+.breadcrumb_icon {
+  width: 15px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+}
+</style>
