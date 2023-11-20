@@ -1,7 +1,7 @@
 //创建用户相关的小仓库
 import { defineStore } from 'pinia'
 import { loginForm, userInfoResponseData } from '@/api/user/type.ts'
-import { reqLogin, reqUserInfo } from '@/api/user'
+import { reqLogin, reqLogout, reqUserInfo } from '@/api/user'
 import { loginResponseData } from '@/api/user/type.ts'
 import { UserState } from '@/store/modules/types/type.ts'
 import { GET_TOKEN, REMOVE_TOKEN, SET_TOKEN } from '@/utils/token.ts'
@@ -26,31 +26,41 @@ const useUserStore = defineStore('User', {
       //登录请求
       const result: loginResponseData = await reqLogin(data)
       if (result.code == 200) {
+        console.log(result.data)
         //pinia仓库存储token
         //由于pinia|vuex存储数据其实利用js对象
-        this.token = result.data.token as string
+        this.token = result.data as string
         //本地存储持久化存储一份
-        SET_TOKEN(result.data.token as string)
+        SET_TOKEN(result.data as string)
         // localStorage.setItem('TOKEN', result.data.token as string)
         //保证当前async函数返回一个成功的promise函数
         return 'ok'
       } else {
-        return Promise.reject(new Error(result.data.message))
+        return Promise.reject(new Error(result.message))
       }
     },
     async userInfo() {
       // 获取用户信息
       const result: userInfoResponseData = await reqUserInfo()
       if (result.code == 200) {
-        this.username = result.data.checkUser.username
-        this.avatar = result.data.checkUser.avatar
+        this.username = result.data.name
+        this.avatar = result.data.avatar
+        return 'ok'
+      } else {
+        return Promise.reject(new Error(result.message))
       }
     },
     async logout() {
-      this.username = ''
-      this.token = ''
-      this.avatar = ''
-      REMOVE_TOKEN()
+      let result = await reqLogout()
+      if (result.code === 200) {
+        this.username = ''
+        this.token = ''
+        this.avatar = ''
+        REMOVE_TOKEN()
+        return 'ok'
+      } else {
+        return Promise.reject(new Error(result.message))
+      }
     },
   },
   getters: {},

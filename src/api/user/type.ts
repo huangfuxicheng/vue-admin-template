@@ -4,33 +4,24 @@ export interface loginForm {
   password: string
 }
 
-interface dataType {
-  token?: string
-  message?: string
-}
-
 export interface loginResponseData {
   code: number
-  data: dataType
-}
-
-interface userInfo {
-  userId: number
-  avatar: string
-  username: string
-  password: string
-  desc: string
-  roles: string[]
-  buttons: string[]
-  routes: Array<string>
-  token: string
+  data: string
+  message: string
+  ok: boolean
 }
 
 interface user {
-  checkUser: userInfo
+  avatar: string
+  name: string
+  roles: string[]
+  buttons: string[]
+  routes: Array<string>
 }
 
 export interface userInfoResponseData {
   code: number
   data: user
+  message: string
+  ok: boolean
 }

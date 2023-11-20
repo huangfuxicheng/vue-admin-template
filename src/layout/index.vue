@@ -1,11 +1,10 @@
 <template>
   <div class="layout_container">
     <!--   左侧菜单-->
-    <div class="layout_slider" :class="{ fold: !!settingStore.fold }">
+    <div class="layout_slider">
       <logo></logo>
       <el-scrollbar class="scrollbar">
         <el-menu
-          :collapse="!!settingStore.fold"
           active-text-color="#ffd04b"
           background-color="#001529"
           class="el-menu-vertical-demo"

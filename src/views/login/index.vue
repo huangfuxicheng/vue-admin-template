@@ -52,7 +52,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { getTime } from '@/utils/time.ts'
 
 let loading = ref(false)
-const loginForm = reactive({ username: 'admin', password: '111111' })
+const loginForm = reactive({ username: 'admin', password: 'atguigu123' })
 const $router = useRouter()
 const $route = useRoute()
 const useStore = useUserStore()
