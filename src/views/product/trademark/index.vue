@@ -1,7 +1,12 @@
 <template>
   <el-card>
     <el-button type="primary" size="default" icon="Plus">添加品牌</el-button>
-    <el-table style="margin: 10px 0" border :data="trademarkArr" :key="id">
+    <el-table
+      style="margin: 10px 0"
+      border
+      :data="trademarkArr"
+      :key="trademarkArr.id"
+    >
       <el-table-column
         label="序号"
         width="80px"
@@ -40,14 +45,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { getTradeMark } from '@/api/product/trademark'
 import { Records, TradeMarkResponseData } from '@/api/product/trademark/type.ts'
 
 let currentPage = ref<number>(1)
 let pageSize = ref<number>(3)
 let total = ref<number>(0)
-let trademarkArr = reactive<Records>([])
+let trademarkArr = ref<Records>([])
 const handleSubmit = async (pager = 1) => {
   currentPage.value = pager
   const resp: TradeMarkResponseData = await getTradeMark(
@@ -56,7 +61,7 @@ const handleSubmit = async (pager = 1) => {
   )
   if (resp.code === 200) {
     total.value = resp.data.total
-    trademarkArr = resp.data.records
+    trademarkArr.value = resp.data.records
   }
 }
 
