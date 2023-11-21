@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <el-button type="primary" size="default" icon="Plus">添加品牌</el-button>
-    <el-table style="margin: 10px 0" border :data="trademarkArr">
+    <el-table style="margin: 10px 0" border :data="trademarkArr" :key="id">
       <el-table-column
         label="序号"
         width="80px"
@@ -31,6 +31,10 @@
       :page-sizes="[3, 5, 7, 9]"
       layout=" prev, pager, next,jumper, ->, sizes, total"
       :total="total"
+      :background="true"
+      :page-count="9"
+      @current-change="handleSubmit"
+      @size-change="handleSizeChange"
     />
   </el-card>
 </template>
@@ -38,13 +42,18 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import { getTradeMark } from '@/api/product/trademark'
+import { Records, TradeMarkResponseData } from '@/api/product/trademark/type.ts'
 
 let currentPage = ref<number>(1)
 let pageSize = ref<number>(3)
 let total = ref<number>(0)
-let trademarkArr = reactive([])
-const handleSubmit = async () => {
-  const resp: any = await getTradeMark(currentPage.value, pageSize.value)
+let trademarkArr = reactive<Records>([])
+const handleSubmit = async (pager = 1) => {
+  currentPage.value = pager
+  const resp: TradeMarkResponseData = await getTradeMark(
+    currentPage.value,
+    pageSize.value,
+  )
   if (resp.code === 200) {
     total.value = resp.data.total
     trademarkArr = resp.data.records
@@ -54,6 +63,9 @@ const handleSubmit = async () => {
 onMounted(() => {
   handleSubmit()
 })
+const handleSizeChange = () => {
+  handleSubmit()
+}
 </script>
 
 <style scoped></style>
