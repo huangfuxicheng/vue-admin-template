@@ -26,7 +26,7 @@
             type="primary"
             size="small"
             icon="Edit"
-            @click="updateTradeMark"
+            @click="updateTradeMark(row)"
           ></el-button>
           <el-button type="primary" size="small" icon="Delete"></el-button>
         </template>
@@ -43,21 +43,33 @@
       @size-change="handleSizeChange"
     />
   </el-card>
-  <el-dialog v-model="dialogVisable" title="ab">
-    <el-form style="width: 80%">
-      <el-form-item label="品牌名称" label-width="80px">
-        <el-input placeholder="请输入品牌名称"></el-input>
+  <el-dialog
+    v-model="dialogVisible"
+    :title="trademarkParams.id ? '更新品牌' : '添加品牌'"
+  >
+    <el-form style="width: 80%" :model="trademarkParams" :rules="rules">
+      <el-form-item label="品牌名称" label-width="80px" prop="tmName">
+        <el-input
+          placeholder="请输入品牌名称"
+          v-model="trademarkParams.tmName"
+        ></el-input>
       </el-form-item>
-      <el-form-item label="品牌LOGO" label-width="80px">
+      <el-form-item label="品牌LOGO" label-width="80px" prop="logoUrl">
         <el-upload
           class="avatar-uploader"
-          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+          action="/api/admin/product/fileUpload"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
         >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-          <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          <img
+            v-if="trademarkParams.logoUrl"
+            :src="trademarkParams.logoUrl"
+            class="avatar"
+          />
+          <el-icon v-else class="avatar-uploader-icon">
+            <Plus />
+          </el-icon>
         </el-upload>
       </el-form-item>
     </el-form>
@@ -69,15 +81,25 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { getTradeMark } from '@/api/product/trademark'
-import { Records, TradeMarkResponseData } from '@/api/product/trademark/type.ts'
+import { onMounted, reactive, ref } from 'vue'
+import type { UploadProps } from 'element-plus'
+import { getTradeMark, reqAddOrUpdateTradeMark } from '@/api/product/trademark'
+import {
+  Records,
+  TradeMark,
+  TradeMarkResponseData,
+} from '@/api/product/trademark/type.ts'
+import { ElMessage } from 'element-plus'
 
 let currentPage = ref<number>(1)
 let pageSize = ref<number>(3)
 let total = ref<number>(0)
 let trademarkArr = ref<Records>([])
-let dialogVisable = ref<boolean>(false)
+let dialogVisible = ref<boolean>(false)
+let trademarkParams = reactive<TradeMark>({
+  tmName: '',
+  logoUrl: '',
+})
 const handleSubmit = async (pager = 1) => {
   currentPage.value = pager
   const resp: TradeMarkResponseData = await getTradeMark(
@@ -98,19 +120,76 @@ const handleSizeChange = () => {
 }
 //添加品牌
 const addTradeMark = () => {
-  dialogVisable.value = true
+  trademarkParams.tmName = ''
+  trademarkParams.logoUrl = ''
+  trademarkParams.id = 0
+  dialogVisible.value = true
 }
 
-const updateTradeMark = () => {
-  dialogVisable.value = true
+const updateTradeMark = (row: TradeMark) => {
+  // trademarkParams.tmName = row.tmName
+  // trademarkParams.logoUrl = row.logoUrl
+  // trademarkParams.id = row.id
+  Object.assign(trademarkParams, row)
+  dialogVisible.value = true
 }
 
 const cancel = () => {
-  dialogVisable.value = false
+  dialogVisible.value = false
 }
 
-const confirm = () => {
-  dialogVisable.value = false
+const confirm = async () => {
+  const result = await reqAddOrUpdateTradeMark(trademarkParams)
+  if (result.code === 200) {
+    dialogVisible.value = false
+    ElMessage({
+      type: 'success',
+      message: trademarkParams.id ? '修改品牌成功' : '添加品牌成功',
+    })
+    handleSubmit(trademarkParams.id ? currentPage.value : 1)
+  } else {
+    dialogVisible.value = false
+    ElMessage({
+      type: 'error',
+      message: trademarkParams.id ? '修改品牌失败' : '添加品牌失败',
+    })
+  }
+  dialogVisible.value = false
+}
+
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  if (rawFile.type !== 'image/jpeg') {
+    ElMessage.error('Avatar picture must be JPG format!')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('Avatar picture size can not exceed 2MB!')
+    return false
+  }
+  return true
+}
+
+const handleAvatarSuccess: UploadProps['onSuccess'] = (response) => {
+  trademarkParams.logoUrl = response.data
+}
+
+const validatorTmName = (rule: any, value: any, callBack: any) => {
+  if (value.trim().length >= 2) {
+    callBack()
+  } else {
+    callBack(new Error('品牌名称位数大于等于两位'))
+  }
+}
+
+const validatorLogoUrl = (rule: any, value: any, callBack: any) => {
+  if (value) {
+    callBack()
+  } else {
+    callBack(new Error('图片没有上传'))
+  }
+}
+const rules = {
+  tmName: [{ required: true, trigger: 'blur', validator: validatorTmName }],
+  logoUrl: [{ required: true, validator: validatorLogoUrl }],
 }
 </script>
 <style scoped>
