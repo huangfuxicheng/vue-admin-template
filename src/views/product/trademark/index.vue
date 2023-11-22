@@ -39,7 +39,6 @@
       layout=" prev, pager, next,jumper, ->, sizes, total"
       :total="total"
       :background="true"
-      :page-count="9"
       @current-change="handleSubmit"
       @size-change="handleSizeChange"
     />
