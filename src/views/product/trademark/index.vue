@@ -12,7 +12,7 @@
       ></el-table-column>
       <el-table-column label="品牌名称" prop="tmName"></el-table-column>
       <el-table-column label="品牌LOGO">
-        <template #="{ row, $index }">
+        <template #="{ row }">
           <img
             :src="row.logoUrl"
             alt="logo"
@@ -21,7 +21,7 @@
         </template>
       </el-table-column>
       <el-table-column label="品牌操作">
-        <template #="{ row, $index }">
+        <template #="{ row }">
           <el-button type="primary" size="small" icon="Edit"></el-button>
           <el-popconfirm
             :title="`确定要删除${row.tmName}吗`"
@@ -34,7 +34,7 @@
                 type="primary"
                 size="small"
                 icon="Delete"
-                @click="deleteTrademark(row)"
+                @click="deleteTrademark(row.id)"
               ></el-button>
             </template>
           </el-popconfirm>
@@ -203,7 +203,7 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (response) => {
   formRef.value.clearValidate('logoUrl')
 }
 
-const validatorTmName = (rule: any, value: any, callBack: any) => {
+const validatorTmName = (_: any, value: any, callBack: any) => {
   if (value.trim().length >= 2) {
     callBack()
   } else {
@@ -211,7 +211,7 @@ const validatorTmName = (rule: any, value: any, callBack: any) => {
   }
 }
 
-const validatorLogoUrl = (rule: any, value: any, callBack: any) => {
+const validatorLogoUrl = (_: any, value: any, callBack: any) => {
   if (value) {
     callBack()
   } else {
@@ -223,8 +223,8 @@ const rules = {
   logoUrl: [{ required: true, validator: validatorLogoUrl }],
 }
 
-const deleteTrademark = async (row) => {
-  const result = await dTrademark(row.id)
+const deleteTrademark = async (id: number) => {
+  const result = await dTrademark(id)
   if (result.code === 200) {
     ElMessage({
       type: 'success',
