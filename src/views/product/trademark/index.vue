@@ -22,13 +22,22 @@
       </el-table-column>
       <el-table-column label="品牌操作">
         <template #="{ row, $index }">
-          <el-button
-            type="primary"
-            size="small"
-            icon="Edit"
-            @click="updateTradeMark(row)"
-          ></el-button>
-          <el-button type="primary" size="small" icon="Delete"></el-button>
+          <el-button type="primary" size="small" icon="Edit"></el-button>
+          <el-popconfirm
+            :title="`确定要删除${row.tmName}吗`"
+            icon="Delete"
+            width="200px"
+            @confirm="updateTradeMark(row)"
+          >
+            <template #reference>
+              <el-button
+                type="primary"
+                size="small"
+                icon="Delete"
+                @click="deleteTrademark(row)"
+              ></el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -47,7 +56,12 @@
     v-model="dialogVisible"
     :title="trademarkParams.id ? '更新品牌' : '添加品牌'"
   >
-    <el-form style="width: 80%" :model="trademarkParams" :rules="rules">
+    <el-form
+      style="width: 80%"
+      :model="trademarkParams"
+      :rules="rules"
+      :ref="formRef"
+    >
       <el-form-item label="品牌名称" label-width="80px" prop="tmName">
         <el-input
           placeholder="请输入品牌名称"
@@ -81,9 +95,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { nextTick, onMounted, reactive, ref } from 'vue'
 import type { UploadProps } from 'element-plus'
-import { getTradeMark, reqAddOrUpdateTradeMark } from '@/api/product/trademark'
+import {
+  dTrademark,
+  getTradeMark,
+  reqAddOrUpdateTradeMark,
+} from '@/api/product/trademark'
 import {
   Records,
   TradeMark,
@@ -100,6 +118,7 @@ let trademarkParams = reactive<TradeMark>({
   tmName: '',
   logoUrl: '',
 })
+let formRef = ref()
 const handleSubmit = async (pager = 1) => {
   currentPage.value = pager
   const resp: TradeMarkResponseData = await getTradeMark(
@@ -123,6 +142,12 @@ const addTradeMark = () => {
   trademarkParams.tmName = ''
   trademarkParams.logoUrl = ''
   trademarkParams.id = 0
+  // formRef.value?.clearValidate('tmName')
+  // formRef.value?.clearValidate('logoUrl')
+  nextTick(() => {
+    formRef.value.clearValidate('tmName')
+    formRef.value.clearValidate('tmName')
+  })
   dialogVisible.value = true
 }
 
@@ -130,6 +155,10 @@ const updateTradeMark = (row: TradeMark) => {
   // trademarkParams.tmName = row.tmName
   // trademarkParams.logoUrl = row.logoUrl
   // trademarkParams.id = row.id
+  nextTick(() => {
+    formRef.value.clearValidate('tmName')
+    formRef.value.clearValidate('tmName')
+  })
   Object.assign(trademarkParams, row)
   dialogVisible.value = true
 }
@@ -139,6 +168,7 @@ const cancel = () => {
 }
 
 const confirm = async () => {
+  await formRef.value.validate()
   const result = await reqAddOrUpdateTradeMark(trademarkParams)
   if (result.code === 200) {
     dialogVisible.value = false
@@ -156,7 +186,7 @@ const confirm = async () => {
   }
   dialogVisible.value = false
 }
-
+//上传图片之前触发的钩子函数
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   if (rawFile.type !== 'image/jpeg') {
     ElMessage.error('Avatar picture must be JPG format!')
@@ -167,9 +197,10 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
-
+//图片上传成功的hook
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response) => {
   trademarkParams.logoUrl = response.data
+  formRef.value.clearValidate('logoUrl')
 }
 
 const validatorTmName = (rule: any, value: any, callBack: any) => {
@@ -190,6 +221,24 @@ const validatorLogoUrl = (rule: any, value: any, callBack: any) => {
 const rules = {
   tmName: [{ required: true, trigger: 'blur', validator: validatorTmName }],
   logoUrl: [{ required: true, validator: validatorLogoUrl }],
+}
+
+const deleteTrademark = async (row) => {
+  const result = await dTrademark(row.id)
+  if (result.code === 200) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功',
+    })
+    handleSubmit(
+      trademarkArr.value.length > 1 ? currentPage.value : currentPage.value - 1,
+    )
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除失败',
+    })
+  }
 }
 </script>
 <style scoped>
