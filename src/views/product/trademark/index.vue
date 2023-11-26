@@ -27,15 +27,10 @@
             :title="`确定要删除${row.tmName}吗`"
             icon="Delete"
             width="200px"
-            @confirm="updateTradeMark(row)"
+            @confirm="deleteTrademark(row.id)"
           >
             <template #reference>
-              <el-button
-                type="primary"
-                size="small"
-                icon="Delete"
-                @click="deleteTrademark(row.id)"
-              ></el-button>
+              <el-button type="primary" size="small" icon="Delete"></el-button>
             </template>
           </el-popconfirm>
         </template>
