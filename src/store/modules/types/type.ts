@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
+import { CategoryObj } from '@/api/attr/type.ts'
 export interface UserState {
   token: string | null
   menuRoutes: RouteRecordRaw[]
@@ -9,4 +10,13 @@ export interface UserState {
 export interface SettingState {
   fold: boolean
   refresh: boolean
+}
+
+export interface CategoryState {
+  c1Id: string | number
+  c2Id: string | number
+  c3Id: string | number
+  c1Arr: CategoryObj[]
+  c2Arr: CategoryObj[]
+  c3Arr: CategoryObj[]
 }
