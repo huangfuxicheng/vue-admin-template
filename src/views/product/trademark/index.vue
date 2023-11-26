@@ -22,7 +22,12 @@
       </el-table-column>
       <el-table-column label="品牌操作">
         <template #="{ row }">
-          <el-button type="primary" size="small" icon="Edit"></el-button>
+          <el-button
+            type="primary"
+            size="small"
+            icon="Edit"
+            @click="updateTradeMark(row)"
+          ></el-button>
           <el-popconfirm
             :title="`确定要删除${row.tmName}吗`"
             icon="Delete"
