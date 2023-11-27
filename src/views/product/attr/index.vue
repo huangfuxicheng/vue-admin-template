@@ -36,14 +36,24 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" width="120px">
-            <template>
+            <template #default="{ row, $index }">
               <el-button
                 type="primary"
                 size="small"
                 icon="Edit"
-                @click="updateAttr"
+                @click="updateAttr(row)"
               ></el-button>
-              <el-button type="primary" size="small" icon="Delete"></el-button>
+              <el-popconfirm
+                :title="`你确定删除${row.attrName}？`"
+                width="200px"
+                @confirm="deleteAttr(row.id)"
+              >
+                <el-button
+                  type="primary"
+                  size="small"
+                  icon="Delete"
+                ></el-button>
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
@@ -83,17 +93,38 @@
           <el-table-column label="属性值">
             <template #default="{ row, $index }">
               <el-input
+                :ref="
+                  (vc: any) => {
+                    console.log(vc)
+                    inputArr[$index] = vc
+                  }
+                "
                 @blur="toLook(row, $index)"
                 v-if="row.flag"
                 placeholder="请输入属性值名称"
                 v-model="row.valueName"
               ></el-input>
-              <div v-else @click="toEdit(row)">{{ row.valueName }}</div>
+              <div v-else @click="toEdit(row, $index)">{{ row.valueName }}</div>
             </template>
           </el-table-column>
-          <el-table-column label="操作"></el-table-column>
+          <el-table-column label="操作">
+            <template #default="{ _, $index }">
+              <el-button
+                type="primary"
+                size="small"
+                icon="Delete"
+                @click="attrParams.attrValueList.splice($index, 1)"
+              ></el-button>
+            </template>
+          </el-table-column>
         </el-table>
-        <el-button type="primary" @click="save">保存</el-button>
+        <el-button
+          type="primary"
+          @click="save"
+          :disabled="attrParams.attrValueList.length <= 0"
+        >
+          保存
+        </el-button>
         <el-button @click="cancel">取消</el-button>
       </div>
     </el-card>
@@ -102,13 +133,14 @@
 
 <script setup lang="ts">
 import useCategoryStore from '@/store/modules/category.ts'
-import { reactive, ref, watch } from 'vue'
-import { reqAttrInfo, saveOrUpdateAttr } from '@/api/attr'
+import { nextTick, reactive, ref, watch } from 'vue'
+import { handleDelete, reqAttrInfo, saveOrUpdateAttr } from '@/api/attr'
 import { AttrInfoData, Attr, attrValue } from '@/api/attr/type.ts'
 import { ElMessage } from 'element-plus'
 
 let attrArr = ref<Attr[]>([])
 let scene = ref<boolean>(true)
+let inputArr = ref<any>([])
 let attrParams = reactive<Attr>({
   attrName: '',
   attrValueList: [],
@@ -142,7 +174,8 @@ const addAttr = () => {
   })
   scene.value = false
 }
-const updateAttr = () => {
+const updateAttr = (row: Attr) => {
+  Object.assign(attrParams, JSON.parse(JSON.stringify(row)))
   scene.value = false
 }
 const cancel = () => {
@@ -168,6 +201,9 @@ const addAttrValue = () => {
   attrParams.attrValueList.push({
     valueName: '',
     flag: true,
+  })
+  nextTick(() => {
+    inputArr.value[attrParams.attrValueList.length - 1].focus()
   })
 }
 const toLook = (row: attrValue, $index: number) => {
@@ -203,8 +239,27 @@ const toLook = (row: attrValue, $index: number) => {
   //相应的属性值对象flag:变为false,展示div
   row.flag = false
 }
-const toEdit = (row: attrValue) => {
+const toEdit = (row: attrValue, $index: number) => {
   row.flag = true
+  nextTick(() => {
+    inputArr.value[$index].focus()
+  })
+}
+
+const deleteAttr = async (id: string) => {
+  const result: any = await handleDelete(id)
+  if (result.code === 200) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功',
+    })
+    getAttr()
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除失败',
+    })
+  }
 }
 </script>
 
