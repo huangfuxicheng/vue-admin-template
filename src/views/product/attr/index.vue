@@ -48,11 +48,13 @@
                 width="200px"
                 @confirm="deleteAttr(row.id)"
               >
-                <el-button
-                  type="primary"
-                  size="small"
-                  icon="Delete"
-                ></el-button>
+                <template #reference>
+                  <el-button
+                    type="primary"
+                    size="small"
+                    icon="Delete"
+                  ></el-button>
+                </template>
               </el-popconfirm>
             </template>
           </el-table-column>
@@ -133,7 +135,7 @@
 
 <script setup lang="ts">
 import useCategoryStore from '@/store/modules/category.ts'
-import { nextTick, reactive, ref, watch } from 'vue'
+import { nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { handleDelete, reqAttrInfo, saveOrUpdateAttr } from '@/api/attr'
 import { AttrInfoData, Attr, attrValue } from '@/api/attr/type.ts'
 import { ElMessage } from 'element-plus'
@@ -261,6 +263,11 @@ const deleteAttr = async (id: string) => {
     })
   }
 }
+//路由组件销毁的时候，把仓库分类相关的数据清空
+onBeforeUnmount(() => {
+  //清空仓库的数据
+  categoryStore.$reset()
+})
 </script>
 
 <style scoped></style>
