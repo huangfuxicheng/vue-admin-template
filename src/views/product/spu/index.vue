@@ -110,11 +110,17 @@ const getSPUInfo = async () => {
 
 const addSpu = () => {
   scene.value = 1
+  spu.value.initAddSpuData(categoryStore.c3Id)
 }
 
-const changeScene = (value: number) => {
+const changeScene = (obj: any) => {
   // console.log(value)
-  scene.value = value
+  scene.value = obj.flag
+  if (obj.params == 'update') {
+    getSPUInfo(currentSize.value)
+  } else {
+    getSPUInfo()
+  }
 }
 
 const updateSpu = (row: SPUData) => {

@@ -30,13 +30,13 @@ export const reqSPUInfo = (page: number, size: number, id: string | number) =>
 export const reqAllTrademark = () =>
   request.get<any, AllTrademark>(API.ALL_TRADEMARK_URL)
 
-export const reqTrademarkImage = (spuId: number) =>
+export const reqTrademarkImage = (spuId: number | string) =>
   request.get<any, SpuHasImg>(API.IMAGE_URL + spuId)
 
 export const reqAllSaleAttr = () =>
   request.get<any, HasSaleAttrResponseData>(API.ALL_SALE_ATTR_URL)
 
-export const reqSpuHasSaleAttr = (spuId: number) =>
+export const reqSpuHasSaleAttr = (spuId: number | string) =>
   request.get<any, SaleAttrResponseData>(API.SPU_ON_ALL_SALE_ATTR_URL + spuId)
 
 //添加一个新的SPU的
@@ -45,8 +45,8 @@ export const reqSpuHasSaleAttr = (spuId: number) =>
 export const reqAddOrUpdateSpu = (data: any) => {
   //如果SPU对象拥有ID,更新已有的SPU
   if (data.id) {
-    return request.post<any, any>(API.UPDATESPU_URL, data)
+    return request.post<any, any>(API.UPDATE_SPU_URL, data)
   } else {
-    return request.post<any, any>(API.ADDSPU_URL, data)
+    return request.post<any, any>(API.ADD_SPU_URL, data)
   }
 }
