@@ -97,7 +97,7 @@
               <el-input
                 :ref="
                   (vc: any) => {
-                    console.log(vc)
+                    // console.log(vc)
                     inputArr[$index] = vc
                   }
                 "

@@ -1,5 +1,3 @@
-import { ResponseData } from '@/api/product/trademark/type.ts'
-
 export interface responseData {
   code: number
   message: string

@@ -113,7 +113,7 @@ const addSpu = () => {
 }
 
 const changeScene = (value: number) => {
-  console.log(value)
+  // console.log(value)
   scene.value = value
 }
 
