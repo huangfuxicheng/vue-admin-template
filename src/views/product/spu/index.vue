@@ -27,6 +27,7 @@
                 size="small"
                 icon="Plus"
                 title="添加SKU"
+                @click="addSku"
               ></el-button>
               <el-button
                 type="primary"
@@ -65,7 +66,11 @@
         v-show="scene === 1"
         @changeScene="changeScene"
       ></spu-form>
-      <sku-form v-show="scene === 2"></sku-form>
+      <sku-form
+        v-show="scene === 2"
+        @changeScene="changeScene"
+        ref="sku"
+      ></sku-form>
     </el-card>
   </div>
 </template>
@@ -86,6 +91,7 @@ let records = ref<Records>([])
 let categoryStore = useCategoryStore()
 
 let spu = ref<any>()
+let sku = ref<any>()
 watch(
   () => categoryStore.c3Id,
   () => {
@@ -96,7 +102,8 @@ watch(
     getSPUInfo()
   },
 )
-const getSPUInfo = async () => {
+const getSPUInfo = async (pager = 1) => {
+  currentSize.value = pager
   const result = await reqSPUInfo(
     currentSize.value,
     pageSize.value,
@@ -126,6 +133,11 @@ const changeScene = (obj: any) => {
 const updateSpu = (row: SPUData) => {
   scene.value = 1
   spu.value.initHasSpuData(row)
+}
+const addSku = (row: SpuData) => {
+  scene.value = 2
+  //调用子组件的方法初始化添加SKU的数据
+  sku.value.initSkuData(categoryStore.c1Id, categoryStore.c2Id, row)
 }
 </script>
 
