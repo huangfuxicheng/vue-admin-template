@@ -136,8 +136,8 @@
 <script setup lang="ts">
 import useCategoryStore from '@/store/modules/category.ts'
 import { nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
-import { handleDelete, reqAttrInfo, saveOrUpdateAttr } from '@/api/attr'
-import { AttrInfoData, Attr, attrValue } from '@/api/attr/type.ts'
+import { handleDelete, reqAttrInfo, saveOrUpdateAttr } from '@/api/product/attr'
+import { AttrInfoData, Attr, attrValue } from '@/api/product/attr/type.ts'
 import { ElMessage } from 'element-plus'
 
 let attrArr = ref<Attr[]>([])

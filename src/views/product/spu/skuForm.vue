@@ -90,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import { reqAttrInfo } from '@/api/attr'
+import { reqAttrInfo } from '@/api/product/attr'
 import {
   reqAddSku,
   reqSpuHasSaleAttr,

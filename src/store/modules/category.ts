@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { reqC1, reqC2, reqC3 } from '@/api/attr'
-import { CategoryResponseData } from '@/api/attr/type.ts'
+import { reqC1, reqC2, reqC3 } from '@/api/product/attr'
+import { CategoryResponseData } from '@/api/product/attr/type.ts'
 import { CategoryState } from '@/store/modules/types/type.ts'
 
 const useCategoryStore = defineStore('Category', {

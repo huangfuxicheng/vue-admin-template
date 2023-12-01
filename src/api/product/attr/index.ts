@@ -1,5 +1,9 @@
 import request from '@/utils/request.ts'
-import { Attr, AttrInfoData, CategoryResponseData } from '@/api/attr/type.ts'
+import {
+  Attr,
+  AttrInfoData,
+  CategoryResponseData,
+} from '@/api/product/attr/type.ts'
 
 enum API {
   C1_URL = '/admin/product/getCategory1',

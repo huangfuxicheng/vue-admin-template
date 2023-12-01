@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { CategoryObj } from '@/api/attr/type.ts'
+import { CategoryObj } from '@/api/product/attr/type.ts'
 export interface UserState {
   token: string | null
   menuRoutes: RouteRecordRaw[]
