@@ -67,6 +67,7 @@
           layout="prev,pager, next,jumper,->,sizes,total"
           :total="total"
           @current-change="getSPUInfo"
+          @size-change="changeSize"
         />
       </div>
       <spu-form
@@ -85,7 +86,7 @@
           <el-table-column label="SKU价格" prop="price"></el-table-column>
           <el-table-column label="SKU重量" prop="weight"></el-table-column>
           <el-table-column label="SKU图片">
-            <template #default="{ row, $index }">
+            <template #default="{ row }">
               <img
                 :src="row.skuDefaultImg"
                 style="width: 100px; height: 100px"
@@ -169,14 +170,14 @@ const addSku = (row: SPUData) => {
 }
 
 const previewSpu = async (row: SPUData) => {
-  const result = await reqSkuList(row.id)
+  const result = await reqSkuList(row.id!)
   if (result.code === 200) {
     dialogVisible.value = true
   }
 }
 
 const deleteSpu = async (row: SPUData) => {
-  const result = await reqDeleteSpu(row.id)
+  const result = await reqDeleteSpu(row.id!)
   if (result.code === 200) {
     ElMessage({
       type: 'success',
@@ -192,7 +193,9 @@ const deleteSpu = async (row: SPUData) => {
     })
   }
 }
-
+const changeSize = () => {
+  getSPUInfo()
+}
 //路由组件销毁前，清空仓库关于分类的数据
 onBeforeUnmount(() => {
   categoryStore.$reset()
