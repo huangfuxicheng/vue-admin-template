@@ -22,6 +22,8 @@ export interface SkuData {
   skuAttrValueList?: Attr[]
   skuSaleAttrValueList?: saleArr[]
   skuDefaultImg: string //sku图片地址
+  isSale?: number
+  id?: number
 }
 
 //获取SKU接口返回的数据ts类型
