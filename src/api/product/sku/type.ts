@@ -8,6 +8,7 @@ export interface Attr {
   valueId: number | string //属性值的ID
 }
 export interface saleArr {
+  id?: number
   saleAttrId: number | string //属性ID
   saleAttrValueId: number | string //属性值的ID
 }
@@ -41,4 +42,9 @@ export interface SkuResponseData extends responseData {
     searchCount: boolean
     pages: number
   }
+}
+
+//获取SKU商品详情接口的ts类型
+export interface SkuInfoData extends responseData {
+  data: SkuData
 }
