@@ -80,7 +80,7 @@
         :total="total"
         @current-change="getSku"
         @size-change="handler"
-      ></el-pagination>
+      />
       <el-drawer v-model="drawer" title="查看商品的详情">
         <el-row style="margin: 10px 0">
           <el-col :span="6">名称</el-col>
