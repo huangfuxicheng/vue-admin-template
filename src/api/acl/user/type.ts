@@ -30,10 +30,10 @@ export interface UserResponseData extends ResponseData {
 //代表一个职位的ts类型
 export interface RoleData {
   id?: number | undefined
-  createTime?: string| undefined
-  updateTime?: string| undefined
-  roleName?: string| undefined
-  remark?: null| undefined
+  createTime?: string | undefined
+  updateTime?: string | undefined
+  roleName?: string | undefined
+  remark?: null | undefined
 }
 //全部职位的列表
 export type AllRole = RoleData[]
