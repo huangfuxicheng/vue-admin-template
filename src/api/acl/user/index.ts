@@ -20,16 +20,18 @@ enum API { //获取全部已有用户账号信息
   DELETE_ALL_USER_URL = '/admin/acl/user/batchRemove',
 }
 
-export const reqAllUser = (page: number, limit: number) =>
-  request.get<any, UserResponseData>(API.ALL_USER_URL + `${page}/${limit}`)
+export const reqAllUser = (page: number, limit: number, kw: string) =>
+  request.get<any, UserResponseData>(
+    API.ALL_USER_URL + `${page}/${limit}?username=${kw}`,
+  )
 
 //添加用户与更新已有用户的接口
 export const reqAddOrUpdateUser = (data: User) => {
   //携带参数有ID更新
   if (data.id) {
-    return request.put<any, any>(API.ADD_USER_URL, data)
+    return request.put<any, any>(API.UPDATE_USER_URL, data)
   } else {
-    return request.post<any, any>(API.UPDATE_USER_URL, data)
+    return request.post<any, any>(API.ADD_USER_URL, data)
   }
 }
 

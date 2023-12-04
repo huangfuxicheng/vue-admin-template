@@ -3,18 +3,31 @@
     <el-card style="height: 80px">
       <el-form inline class="search_container">
         <el-form-item label="用户名：">
-          <el-input placeholder="请输入搜索用户名"></el-input>
+          <el-input placeholder="请输入搜索用户名" v-model="keyword"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">搜索</el-button>
-          <el-button type="info">重置</el-button>
+          <el-button type="primary" :disabled="!keyword" @click="search">
+            搜索
+          </el-button>
+          <el-button type="info" @click="reset">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
     <el-card style="margin: 10px 0">
       <el-button type="primary" @click="addUser">添加用户</el-button>
-      <el-button type="primary">批量删除</el-button>
-      <el-table style="margin: 10px 0" border :data="userArr">
+      <el-button
+        type="primary"
+        @click="deleteSelectUser"
+        :disabled="!selectIdArr?.length"
+      >
+        批量删除
+      </el-button>
+      <el-table
+        style="margin: 10px 0"
+        border
+        :data="userArr"
+        @selection-change="selectChange"
+      >
         <el-table-column type="selection" align="center"></el-table-column>
         <el-table-column
           label="#"
@@ -70,9 +83,17 @@
             >
               编辑
             </el-button>
-            <el-button type="primary" size="small" icon="Delete">
-              删除
-            </el-button>
+            <el-popconfirm
+              :title="`你确定要删除${row.username}`"
+              width="260px"
+              @confirm="deleteUser(row.id)"
+            >
+              <template #reference>
+                <el-button type="primary" size="small" icon="Delete">
+                  删除
+                </el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -164,8 +185,8 @@
         </template>
         <template #footer>
           <div style="flex: auto">
-            <el-button @click="drawer1 = false"></el-button>
-            <el-button type="primary" @click="confirmClick"></el-button>
+            <el-button @click="drawer1 = false">取消</el-button>
+            <el-button type="primary" @click="confirmClick">确定</el-button>
           </div>
         </template>
       </el-drawer>
@@ -178,7 +199,9 @@ import { nextTick, onMounted, reactive, ref } from 'vue'
 import {
   reqAddOrUpdateUser,
   reqAllUser,
+  reqRemoveUser,
   reqRole,
+  reqSelectUser,
   reqSetUserRole,
 } from '@/api/acl/user'
 import type {
@@ -187,7 +210,8 @@ import type {
   SetRoleData,
   User,
 } from '@/api/acl/user/type.ts'
-import { ElMessage } from 'element-plus'
+import { CheckboxValueType, ElMessage } from 'element-plus'
+import useLayoutSettingStore from '@/store/modules/setting.ts'
 
 let currentSize = ref<number>(1)
 let pageSize = ref<number>(10)
@@ -198,6 +222,10 @@ let ALlRole = ref<AllRole>([])
 let UserRole = ref<AllRole>([])
 const checkAll = ref<boolean>(false)
 let isIndeterminate = ref<boolean>(true)
+let selectIdArr = ref()
+//获取模板setting仓库
+let settingStore = useLayoutSettingStore()
+let keyword = ref<string>('')
 //收集用户信息的响应式数据
 let userParams = reactive<User>({
   username: '',
@@ -212,7 +240,11 @@ onMounted(() => {
 })
 const getAllUser = async (pager = 1) => {
   currentSize.value = pager
-  const result = await reqAllUser(currentSize.value, pageSize.value)
+  const result = await reqAllUser(
+    currentSize.value,
+    pageSize.value,
+    keyword.value,
+  )
   if (result.code === 200) {
     total.value = result.data.total
     userArr.value = result.data.records
@@ -256,6 +288,7 @@ const cancel = () => {
 const save = async () => {
   await formRef.value.validate()
   //保存按钮:添加新的用户|更新已有的用户账号信息
+  console.log(userParams)
   let result: any = await reqAddOrUpdateUser(userParams)
   //添加或者更新成功
   if (result.code == 200) {
@@ -308,7 +341,7 @@ const rules = {
 
 const dispatchRole = async (row: User) => {
   Object.assign(userParams, row)
-  const result = await reqRole(row.id)
+  const result = await reqRole(row.id as number)
   if (result.code === 200) {
     ALlRole.value = result.data.allRolesList
     UserRole.value = result.data.assignRoles
@@ -319,12 +352,12 @@ const dispatchRole = async (row: User) => {
   drawer1.value = true
 }
 
-const handleCheckAllChange = (val: boolean) => {
+const handleCheckAllChange = (val: CheckboxValueType) => {
   UserRole.value = val ? ALlRole : []
   isIndeterminate.value = false
 }
 
-const handleCheckedCitiesChange = (val: string[]) => {
+const handleCheckedCitiesChange = (val: CheckboxValueType[]) => {
   const checkedCount = val.length
   checkAll.value = checkedCount === ALlRole.value.length
   isIndeterminate.value =
@@ -336,7 +369,7 @@ const confirmClick = async () => {
   //收集参数
   let data: SetRoleData = {
     userId: userParams.id as number,
-    roleIdList: userRole.value.map((item) => item.id as number),
+    roleIdList: UserRole.value.map((item) => item.id as number),
   }
   //分配用户的职位
   let result: any = await reqSetUserRole(data)
@@ -346,8 +379,56 @@ const confirmClick = async () => {
     //关闭抽屉
     drawer1.value = false
     //获取更新完毕用户的信息,更新完毕留在当前页
-    getHasUser(pageNo.value)
+    getAllUser(currentSize.value)
   }
+}
+
+const deleteUser = async (id: number) => {
+  let result: any = await reqRemoveUser(id)
+  if (result.code === 200) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功',
+    })
+    getAllUser(
+      userArr.value.length > 1 ? currentSize.value : currentSize.value - 1,
+    )
+  }
+}
+
+const selectChange = (value: []) => {
+  selectIdArr.value = value
+}
+
+const deleteSelectUser = async () => {
+  //整理批量删除的参数
+  let idsList: any = selectIdArr.value.map((item) => {
+    return item.id
+  })
+  const result = await reqSelectUser(idsList)
+  if (result.code === 200) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功',
+    })
+    getAllUser(
+      userArr.value.length > 1 ? currentSize.value : currentSize.value - 1,
+    )
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '删除失败',
+    })
+  }
+}
+
+const search = () => {
+  getAllUser()
+}
+
+//重置按钮
+const reset = () => {
+  settingStore.refresh = !settingStore.refresh
 }
 </script>
 
