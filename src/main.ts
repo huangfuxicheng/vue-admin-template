@@ -20,5 +20,5 @@ app.use(ElementPlus, {
 app.use(globalComponent)
 app.use(router)
 app.use(pinia)
-import './permisstion.ts'
+import './permission.ts'
 app.mount('#app')

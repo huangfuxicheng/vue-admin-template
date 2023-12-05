@@ -353,7 +353,7 @@ const dispatchRole = async (row: User) => {
 }
 
 const handleCheckAllChange = (val: CheckboxValueType) => {
-  UserRole?.value = val ? ALlRole : []
+  UserRole.value = val ? ALlRole : []
   isIndeterminate.value = false
 }
 
