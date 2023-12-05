@@ -353,7 +353,7 @@ const dispatchRole = async (row: User) => {
 }
 
 const handleCheckAllChange = (val: CheckboxValueType) => {
-  UserRole.value = val ? ALlRole : []
+  UserRole?.value = val ? ALlRole : []
   isIndeterminate.value = false
 }
 
@@ -391,7 +391,7 @@ const deleteUser = async (id: number) => {
       message: '删除成功',
     })
     getAllUser(
-      userArr.value.length > 1 ? currentSize.value : currentSize.value - 1,
+      userArr?.value.length > 1 ? currentSize.value : currentSize.value - 1,
     )
   }
 }
@@ -402,17 +402,17 @@ const selectChange = (value: []) => {
 
 const deleteSelectUser = async () => {
   //整理批量删除的参数
-  let idsList: any = selectIdArr.value.map((item) => {
+  let idsList: any = selectIdArr.value.map((item: any) => {
     return item.id
   })
-  const result = await reqSelectUser(idsList)
+  const result: any = await reqSelectUser(idsList)
   if (result.code === 200) {
     ElMessage({
       type: 'success',
       message: '删除成功',
     })
     getAllUser(
-      userArr.value.length > 1 ? currentSize.value : currentSize.value - 1,
+      userArr?.value.length > 1 ? currentSize.value : currentSize.value - 1,
     )
   } else {
     ElMessage({
