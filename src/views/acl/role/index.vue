@@ -61,7 +61,7 @@
       ></el-pagination>
       <el-dialog v-model="dialogVisible">
         <el-form
-          :title="RoleParams.id ? '更新职位' : '添加职位'"
+          :title="RoleParams?.id ? '更新职位' : '添加职位'"
           :rules="rules"
           ref="formRef"
           :model="RoleParams"
@@ -116,7 +116,7 @@ import {
   reqSetPermisstion,
 } from '@/api/acl/role'
 import { ElMessage } from 'element-plus'
-import { MenuList, RoleData } from '@/api/acl/role/type.ts'
+import { MenuList, MenuResponseData, RoleData } from '@/api/acl/role/type.ts'
 import useLayoutSettingStore from '@/store/modules/setting.ts'
 
 let pageSize = ref<number>(10)
@@ -126,7 +126,7 @@ let roleArr = ref()
 let keyword = ref<string>('')
 let dialogVisible = ref<boolean>(false)
 let settingStore = useLayoutSettingStore()
-let RoleParams = reactive({
+let RoleParams = reactive<RoleData>({
   roleName: '',
 })
 let selectArr = ref<number[]>([])
@@ -134,6 +134,7 @@ let selectArr = ref<number[]>([])
 let menuArr = ref<MenuList>([])
 let drawer = ref<boolean>(false)
 let formRef = ref()
+let tree = ref()
 onMounted(() => {
   getAllRole()
 })
@@ -187,16 +188,16 @@ const save = async () => {
     //提示文字
     ElMessage({
       type: 'success',
-      message: RoleParams.id ? '更新成功' : '添加成功',
+      message: RoleParams?.id ? '更新成功' : '添加成功',
     })
     //对话框显示
     dialogVisible.value = false
     //再次获取全部的已有的职位
-    getAllRole(RoleParams.id ? currentSize.value : 1)
+    getAllRole(RoleParams?.id ? currentSize.value : 1)
   }
 }
 
-const validatorRoleName = (rule: any, value: any, callBack: any) => {
+const validatorRoleName = (_: any, value: any, callBack: any) => {
   if (value.trim().length >= 2) {
     callBack()
   } else {
@@ -229,7 +230,7 @@ const setPermisstion = async (row: RoleData) => {
   //收集当前要分类权限的职位的数据
   Object.assign(RoleParams, row)
   //根据职位获取权限的数据
-  let result: MenuResponseData = await reqAllMenuList(RoleParams.id as number)
+  let result: MenuResponseData = await reqAllMenuList(RoleParams?.id as number)
   if (result.code == 200) {
     menuArr.value = result.data
     selectArr.value = filterSelectArr(menuArr.value, [])
@@ -237,11 +238,12 @@ const setPermisstion = async (row: RoleData) => {
 }
 const filterSelectArr = (allData: any, initArr: any) => {
   allData.forEach((item: any) => {
-    if (item.select && item.level == 4) {
-      initArr.push(item.id)
-    }
     if (item.children && item.children.length > 0) {
       filterSelectArr(item.children, initArr)
+    } else {
+      if (item.select) {
+        initArr.push(item.id)
+      }
     }
   })
 
@@ -251,8 +253,9 @@ const filterSelectArr = (allData: any, initArr: any) => {
 //抽屉确定按钮的回调
 const confirmClick = async () => {
   //职位的ID
-  const roleId = RoleParams.id as number
+  const roleId = RoleParams?.id as number
   //选中节点的ID
+  // checkedKeys
   let arr = tree.value.getCheckedKeys()
   //半选的ID
   let arr1 = tree.value.getHalfCheckedKeys()
