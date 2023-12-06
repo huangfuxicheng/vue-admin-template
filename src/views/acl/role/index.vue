@@ -279,7 +279,9 @@ const deleteRole = async (id: number) => {
       type: 'success',
       message: '删除成功',
     })
-    getAllRole()
+    getAllRole(
+      roleArr.value.length > 0 ? currentSize.value : currentSize.value - 1,
+    )
   } else {
     ElMessage({
       type: 'error',
