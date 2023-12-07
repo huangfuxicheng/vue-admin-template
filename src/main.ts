@@ -6,6 +6,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import router from '@/router'
 //svg插件需要配置代码
 import 'virtual:svg-icons-register'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 //引入自定义插件对象：注册整个项目全局组件
 import globalComponent from '@/components/index'
 import '@/styles/index.scss'
