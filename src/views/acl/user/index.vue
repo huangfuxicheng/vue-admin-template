@@ -204,22 +204,17 @@ import {
   reqSelectUser,
   reqSetUserRole,
 } from '@/api/acl/user'
-import type {
-  AllRole,
-  Records,
-  SetRoleData,
-  User,
-} from '@/api/acl/user/type.ts'
+import type { AllRole, SetRoleData, User } from '@/api/acl/user/type.ts'
 import { CheckboxValueType, ElMessage } from 'element-plus'
 import useLayoutSettingStore from '@/store/modules/setting.ts'
 
 let currentSize = ref<number>(1)
 let pageSize = ref<number>(10)
 let total = ref<number>(0)
-let userArr = ref<Records>()
+let userArr = ref<any>()
 let formRef = ref()
 let ALlRole = ref<AllRole>([])
-let UserRole = ref<AllRole>([])
+let UserRole = ref<any>([])
 const checkAll = ref<boolean>(false)
 let isIndeterminate = ref<boolean>(true)
 let selectIdArr = ref()
@@ -369,7 +364,7 @@ const confirmClick = async () => {
   //收集参数
   let data: SetRoleData = {
     userId: userParams.id as number,
-    roleIdList: UserRole.value.map((item) => item.id as number),
+    roleIdList: UserRole.value.map((item: any) => item.id as number),
   }
   //分配用户的职位
   let result: any = await reqSetUserRole(data)

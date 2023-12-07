@@ -156,7 +156,7 @@ const handler = async (row: SpuImg) => {
 }
 
 const save = async () => {
-  skuParams.skuAttrValueList = attrArr.value.reduce((prev, next) => {
+  skuParams.skuAttrValueList = attrArr.value.reduce((prev: any, next: any) => {
     if (next.attrIdAndValueId) {
       const [attrId, valueId] = next.attrIdAndValueId.split(':')
       prev.push({
@@ -167,16 +167,19 @@ const save = async () => {
     return prev
   }, [])
 
-  skuParams.skuSaleAttrValueList = saleArr.value.reduce((prev, next) => {
-    if (next.saleIdAndValueId) {
-      const [attrId, valueId] = next.saleIdAndValueId.split(':')
-      prev.push({
-        attrId,
-        valueId,
-      })
-    }
-    return prev
-  }, [])
+  skuParams.skuSaleAttrValueList = saleArr.value.reduce(
+    (prev: any, next: any) => {
+      if (next.saleIdAndValueId) {
+        const [attrId, valueId] = next.saleIdAndValueId.split(':')
+        prev.push({
+          attrId,
+          valueId,
+        })
+      }
+      return prev
+    },
+    [],
+  )
   const result = await reqAddSku(skuParams)
   if (result.code === 200) {
     ElMessage({

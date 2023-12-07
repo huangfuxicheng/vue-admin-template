@@ -8,7 +8,6 @@
 import { ref } from 'vue'
 
 let sum = ref(1)
-let sum = ref(1)
 </script>
 
 <style scoped></style>

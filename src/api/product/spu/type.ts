@@ -54,13 +54,13 @@ export interface SpuHasImg extends responseData {
 
 export interface SaleAttrValue {
   id?: number
-  createTime: null
-  updateTime: null
-  spuId: number
-  baseSaleAttrId: number
+  createTime?: null
+  updateTime?: null
+  spuId?: number
+  baseSaleAttrId: number | string
   saleAttrValueName: string
-  saleAttrName: string
-  isChecked: null
+  saleAttrName?: string
+  isChecked?: null
 }
 export type SpuSaleAttrValueList = SaleAttrValue[]
 export interface HasSaleAttr {
@@ -78,7 +78,7 @@ export interface SaleAttr {
   updateTime?: null
   spuId?: number
   baseSaleAttrId: number | string
-  saleSaleAttrId: number | string
+  saleAttrName: string
   spuSaleAttrValueList: SpuSaleAttrValueList
   flag?: boolean
   saleAttrValue?: string

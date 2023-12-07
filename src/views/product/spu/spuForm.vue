@@ -108,7 +108,7 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" width="120px">
-          <template #default="{ _, $index }">
+          <template #default="{ $index }">
             <el-button
               type="primary"
               icon="Delete"
@@ -129,8 +129,8 @@
 import {
   HasSaleAttr,
   SaleAttr,
+  SaleAttrValue,
   SPUData,
-  SpuImg,
   Trademark,
 } from '@/api/product/spu/type.ts'
 import {
@@ -151,7 +151,7 @@ const cancel = () => {
 //存储已有的SPU这些数据
 let AllTradeMark = ref<Trademark[]>([])
 //商品图片
-let imgList = ref<SpuImg[]>([])
+let imgList = ref<any>([])
 //已有的SPU销售属性
 let saleAttr = ref<SaleAttr[]>([])
 //全部销售属性
@@ -234,8 +234,8 @@ const handlerUpload = (file: any) => {
 let unSelectSaleAttr = computed(() => {
   //全部销售属性:颜色、版本、尺码
   //已有的销售属性:颜色、版本
-  return allSaleAttr.value.filter((item) => {
-    return saleAttr.value.every((item1) => {
+  return allSaleAttr.value.filter((item: any) => {
+    return saleAttr.value.every((item1: any) => {
       return item.name != item1.saleAttrName
     })
   })
@@ -302,7 +302,7 @@ const toLook = (row: SaleAttr) => {
 }
 
 const save = async () => {
-  SpuParams.value.spuImageList = imgList.value.map((item) => {
+  SpuParams.value.spuImageList = imgList.value.map((item: any) => {
     return {
       imgName: item.name,
       imgUrl: item?.response?.data || item.url,
@@ -315,11 +315,14 @@ const save = async () => {
       type: 'success',
       message: SpuParams.value.id ? '更新成功' : '添加成功',
     })
-    $emit('changeScene', { flag: 0, params: SpuParams.id ? 'upload' : 'add' })
+    $emit('changeScene', {
+      flag: 0,
+      params: SpuParams.value.id ? 'upload' : 'add',
+    })
   } else {
     ElMessage({
       type: 'error',
-      message: SpuParams.id ? '更新失败' : '添加失败',
+      message: SpuParams.value.id ? '更新失败' : '添加失败',
     })
   }
 }

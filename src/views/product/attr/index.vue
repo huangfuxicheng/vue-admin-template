@@ -36,7 +36,7 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" width="120px">
-            <template #default="{ row, $index }">
+            <template #default="{ row }">
               <el-button
                 type="primary"
                 size="small"
@@ -110,7 +110,7 @@
             </template>
           </el-table-column>
           <el-table-column label="操作">
-            <template #default="{ _, $index }">
+            <template #default="{ $index }">
               <el-button
                 type="primary"
                 size="small"
