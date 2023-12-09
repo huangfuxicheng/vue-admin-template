@@ -14,9 +14,9 @@
           <Line class="line" />
         </div>
         <div class="right">
-          <Rank></Rank>
-          <Year></Year>
-          <Counter></Counter>
+          <Rank class="rank"></Rank>
+          <Year class="year"></Year>
+          <Counter class="counter"></Counter>
         </div>
       </div>
     </div>
@@ -77,7 +77,18 @@ window.onresize = () => {
         flex: 1;
         display: flex;
         flex-direction: column;
-        margin-left: 40px;
+        .rank {
+          flex: 1.5;
+          //background: skyblue;
+        }
+        .year {
+          flex: 1;
+          //background: pink;
+        }
+        .counter {
+          flex: 1;
+          //background: purple;
+        }
       }
       .left {
         flex: 1;
@@ -99,6 +110,7 @@ window.onresize = () => {
         flex: 2;
         display: flex;
         flex-direction: column;
+        margin: 0 20px;
         .map {
           flex: 3;
         }

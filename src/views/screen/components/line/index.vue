@@ -20,6 +20,10 @@ onMounted(() => {
     //标题组件
     title: {
       text: '访问量',
+      textStyle: {
+        color: 'white',
+      },
+      left: '50%',
     },
     //x|y轴
     xAxis: {
@@ -55,7 +59,7 @@ onMounted(() => {
     },
     grid: {
       left: 40,
-      top: 0,
+      top: 30,
       right: 20,
       bottom: 20,
     },
