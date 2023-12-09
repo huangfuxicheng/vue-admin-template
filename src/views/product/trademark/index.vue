@@ -1,6 +1,12 @@
 <template>
   <el-card>
-    <el-button type="primary" size="default" icon="Plus" @click="addTradeMark">
+    <el-button
+      type="primary"
+      size="default"
+      icon="Plus"
+      @click="addTradeMark"
+      v-if="userStore.buttons.includes('btn.Trademark.add')"
+    >
       添加品牌
     </el-button>
     <el-table style="margin: 10px 0" border :data="trademarkArr">
@@ -108,7 +114,9 @@ import {
   TradeMarkResponseData,
 } from '@/api/product/trademark/type.ts'
 import { ElMessage } from 'element-plus'
+import useUserStore from '@/store/modules/user.ts'
 
+let userStore = useUserStore()
 let currentPage = ref<number>(1)
 let pageSize = ref<number>(3)
 let total = ref<number>(0)

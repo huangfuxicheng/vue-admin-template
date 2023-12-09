@@ -11,6 +11,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import globalComponent from '@/components/index'
 import '@/styles/index.scss'
 import pinia from '@/store'
+import { isHasButton } from '@/directive/has.ts'
 
 const app = createApp(App)
 
@@ -22,4 +23,5 @@ app.use(globalComponent)
 app.use(router)
 app.use(pinia)
 import './permission.ts'
+isHasButton(app)
 app.mount('#app')

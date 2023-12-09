@@ -22,6 +22,7 @@ export const constantRoute = [
     children: [
       {
         path: '/home',
+        name: 'home',
         meta: {
           title: '首页',
           hidden: false,
@@ -41,6 +42,19 @@ export const constantRoute = [
       icon: 'Platform',
     },
   },
+  {
+    path: '/404',
+    component: () => import('@/views/404/index.vue'),
+    name: '404',
+    meta: {
+      title: '404',
+      hidden: true,
+      icon: 'HomeFilled',
+    },
+  },
+]
+
+export const asyncRoute = [
   {
     path: '/acl',
     component: () => import('@/layout/index.vue'),
@@ -137,24 +151,15 @@ export const constantRoute = [
       },
     ],
   },
-  {
-    path: '/404',
-    component: () => import('@/views/404/index.vue'),
-    name: '404',
-    meta: {
-      title: '404',
-      hidden: true,
-      icon: 'HomeFilled',
-    },
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/404',
-    name: 'Any',
-    meta: {
-      title: '任意路由',
-      hidden: true,
-      icon: 'HomeFilled',
-    },
-  },
 ]
+
+export const anyRoute = {
+  path: '/:pathMatch(.*)*',
+  redirect: '/404',
+  name: 'Any',
+  meta: {
+    title: '任意路由',
+    hidden: true,
+    icon: 'HomeFilled',
+  },
+}
