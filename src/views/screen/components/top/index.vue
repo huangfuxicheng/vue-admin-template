@@ -58,6 +58,7 @@ const goHome = () => {
       line-height: 40px;
       color: #29fcff;
       font-size: 20px;
+      cursor: pointer;
     }
   }
 
@@ -92,6 +93,7 @@ const goHome = () => {
       text-align: center;
       line-height: 40px;
       color: #29fcff;
+      cursor: pointer;
     }
 
     .time {
