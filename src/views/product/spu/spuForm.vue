@@ -174,22 +174,34 @@ let SpuParams = ref<SPUData>({
 let saleAttrIdAndValueName = ref<string>('')
 const initHasSpuData = async (row: SPUData) => {
   SpuParams.value = row
-  let result = await reqAllTrademark()
-  let result1 = await reqTrademarkImage(row.id as number)
-  let result2 = await reqSpuHasSaleAttr(row.id as number)
-  let result3 = await reqAllSaleAttr()
-  AllTradeMark.value = result.data
+  const resps = await Promise.all([
+    reqAllTrademark(),
+    reqTrademarkImage(row.id as number),
+    reqSpuHasSaleAttr(row.id as number),
+    reqAllSaleAttr(),
+  ])
+  for (const resp of resps) {
+    if (!resp || !resp.ok) {
+      ElMessage({
+        type: 'error',
+        message: '请求失败',
+      })
+      return
+    }
+  }
+  const [info, image, sale, sales] = resps
+  AllTradeMark.value = info.data
   //SPU对应商品图片
-  imgList.value = result1.data.map((item) => {
+  imgList.value = image.data.map((item: any) => {
     return {
       name: item.imgName,
       url: item.imgUrl,
     }
   })
   //存储已有的SPU的销售属性
-  saleAttr.value = result2.data
+  saleAttr.value = sale.data
   //存储全部的销售属性
-  allSaleAttr.value = result3.data
+  allSaleAttr.value = sales.data
 }
 
 //照片墙点击预览按钮的时候触发的钩子
@@ -340,12 +352,20 @@ const initAddSpuData = async (c3: string | number) => {
   saleAttr.value = []
   saleAttrIdAndValueName.value = ''
   SpuParams.value.category3Id = c3
-  let result = await reqAllTrademark()
-  let result1 = await reqAllSaleAttr()
-  AllTradeMark.value = result.data
-
+  const resps = await Promise.all([reqAllTrademark(), reqAllSaleAttr()])
+  for (const resp of resps) {
+    if (!resp || !resp.ok) {
+      ElMessage({
+        type: 'error',
+        message: '请求失败，请联系管理员',
+      })
+      return
+    }
+  }
+  const [trademark, sale] = resps
+  AllTradeMark.value = trademark?.data
   //存储全部的销售属性
-  allSaleAttr.value = result1.data
+  allSaleAttr.value = sale?.data
 }
 
 defineExpose({ initHasSpuData, initAddSpuData })

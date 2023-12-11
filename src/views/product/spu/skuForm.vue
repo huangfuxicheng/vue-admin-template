@@ -93,6 +93,8 @@
 import { reqAttrInfo } from '@/api/product/attr'
 import {
   reqAddSku,
+  reqAllSaleAttr,
+  reqAllTrademark,
   reqSpuHasSaleAttr,
   reqTrademarkImage,
 } from '@/api/product/spu'
@@ -131,17 +133,29 @@ const initSkuData = async (
   skuParams.spuId = spu.id
   skuParams.tmId = spu.tmId
   //获取平台属性
-  let result = await reqAttrInfo(c1Id, c2Id, spu.category3Id)
   //获取对应的销售属性
-  let result1 = await reqSpuHasSaleAttr(spu.id)
   //获取照片墙的数据
-  let result2 = await reqTrademarkImage(spu.id)
+  const resps = await Promise.all([
+    reqAttrInfo(c1Id, c2Id, spu.category3Id),
+    reqSpuHasSaleAttr(spu.id),
+    reqTrademarkImage(spu.id),
+  ])
+  for (const resp of resps) {
+    if (!resp || !resp.ok) {
+      ElMessage({
+        type: 'error',
+        message: '请求失败，请联系管理员',
+      })
+      return
+    }
+  }
+  const [attr, sale, trademark] = resps
   //平台属性
-  attrArr.value = result.data
+  attrArr.value = attr.data
   //销售属性
-  saleArr.value = result1.data
+  saleArr.value = sale.data
   //图片
-  imgArr.value = result2.data
+  imgArr.value = trademark.data
 }
 
 const handler = async (row: SpuImg) => {
