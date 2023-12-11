@@ -6,9 +6,11 @@
     </div>
     <div class="sex">
       <div class="man">
+        <span>男士</span>
         <img src="../../images/man.png" alt="" />
       </div>
       <div class="women">
+        <p>女士</p>
         <img src="../../images/woman.png" alt="" />
       </div>
     </div>
@@ -91,22 +93,31 @@ onMounted(() => {
       width: 111px;
       height: 115px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
+      span {
+        color: white;
+      }
     }
     .women {
       width: 111px;
       height: 115px;
       background: url('../../images/woman-bg.png');
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
+      p {
+        color: white;
+      }
     }
   }
   .rate {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     color: white;
+    margin-top: 20px;
   }
   .charts {
     height: 100px;
