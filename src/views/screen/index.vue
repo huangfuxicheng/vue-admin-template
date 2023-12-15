@@ -116,7 +116,6 @@ window.onresize = () => {
         }
         .line {
           flex: 1;
-          //background: skyblue;
         }
       }
     }
