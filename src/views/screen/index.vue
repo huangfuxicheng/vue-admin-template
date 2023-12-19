@@ -31,7 +31,7 @@ import Top from './components/top/index.vue'
 import Tourist from './components/tourist/index.vue'
 import Sex from './components/sex/index.vue'
 import Age from './components/age/index.vue'
-import Map from './components/map/index.vue'
+import Map from './components/map1/index.vue'
 import Line from './components/line/index.vue'
 import Rank from './components/rank/index.vue'
 import Year from './components/year/index.vue'
@@ -112,6 +112,7 @@ window.onresize = () => {
         margin: 0 20px;
         .map {
           flex: 3;
+          margin: 50px 0 0 0;
         }
         .line {
           flex: 1;

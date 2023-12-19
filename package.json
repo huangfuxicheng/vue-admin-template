@@ -19,6 +19,7 @@
     "commitlint": "commitlint --config commitlint.config.cjs -e -V"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@element-plus/icons-vue": "^2.1.0",
     "@types/nprogress": "^0.2.3",
     "axios": "^1.6.1",
