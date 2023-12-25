@@ -44,6 +44,7 @@
               <el-button type="primary" size="small" icon="Delete"></el-button>
             </template>
           </el-popconfirm>
+          <el-icon @click="drawer = true"><Location /></el-icon>
         </template>
       </el-table-column>
     </el-table>
@@ -98,11 +99,21 @@
       <el-button type="primary" size="small" @click="confirm">确定</el-button>
     </template>
   </el-dialog>
+  <el-drawer
+    v-model="drawer"
+    title="I am the title"
+    :with-header="false"
+    direction="btt"
+    size="50%"
+  >
+    <positionPicker style="height: 100%; width: 100%"></positionPicker>
+  </el-drawer>
 </template>
 
 <script setup lang="ts">
 import { nextTick, onMounted, reactive, ref } from 'vue'
 import type { UploadProps } from 'element-plus'
+import positionPicker from '@/components/PositionPicker/index.vue'
 import {
   dTrademark,
   getTradeMark,
@@ -127,6 +138,7 @@ let trademarkParams = reactive<TradeMark>({
   logoUrl: '',
 })
 let formRef = ref()
+const drawer = ref(false)
 const handleSubmit = async (pager = 1) => {
   currentPage.value = pager
   const resp: TradeMarkResponseData = await getTradeMark(
