@@ -3,10 +3,13 @@ import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 import useUserStore from '@/store/modules/user.ts'
 import { ElMessage } from 'element-plus'
+import getPageTitle from '@/utils/get-page-title.ts'
 
 nprogress.configure({ showSpinner: false })
 // https://pinia.vuejs.org/zh/core-concepts/outside-component-usage.html
 router.beforeEach(async (to, _, next) => {
+  // set page title
+  document.title = getPageTitle(to.meta.title)
   const userStore = useUserStore()
   //用户登录判断
   if (userStore.token) {
